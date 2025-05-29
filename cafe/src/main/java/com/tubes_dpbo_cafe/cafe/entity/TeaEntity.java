@@ -1,10 +1,11 @@
 package com.tubes_dpbo_cafe.cafe.entity;
+import com.tubes_dpbo_cafe.cafe.interfaces.ITea;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tea")
-public class TeaEntity extends MenuEntity {
+public class TeaEntity extends MenuEntity implements ITea {
 
     @Column(name = "leaf_origin")
     private String leafOrigin;
@@ -24,19 +25,17 @@ public class TeaEntity extends MenuEntity {
             String description,
             double price,
             int stock,
-            boolean isBestSeller,
+            boolean bestSeller,
             String image,
             String leafOrigin,
             boolean isHerbal,
             String brewMethod
     ) {
-        super(id, name, category, description, price, stock, isBestSeller, image);
+        super(id, name, category, description, price, stock, bestSeller, image);
         this.leafOrigin = leafOrigin;
         this.isHerbal = isHerbal;
         this.brewMethod = brewMethod;
     }
-
-    // Getters and Setters
 
     public String getLeafOrigin() { return leafOrigin; }
     public void setLeafOrigin(String leafOrigin) { this.leafOrigin = leafOrigin; }

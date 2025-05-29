@@ -1,12 +1,14 @@
 package com.tubes_dpbo_cafe.cafe.entity;
+import com.tubes_dpbo_cafe.cafe.interfaces.ICoffee;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "coffee")
-public class CoffeeEntity extends MenuEntity {
+@MappedSuperclass
+public class CoffeeEntity extends MenuEntity implements ICoffee {
 
     @Column(name = "bean_origin")
     private String beanOrigin;
@@ -28,9 +30,9 @@ public class CoffeeEntity extends MenuEntity {
     public CoffeeEntity() {}
 
     public CoffeeEntity(Integer id, String name, String category, String description, double price, int stock,
-                        boolean isBestSeller, String image, String beanOrigin, String beanType, String roastLevel,
+                        boolean bestSeller, String image, String beanOrigin, String beanType, String roastLevel,
                         int strongLevel, String brewMethod) {
-        super(id, name, category, description, price, stock, isBestSeller, image);
+        super(id, name, category, description, price, stock, bestSeller, image);
         this.beanOrigin = beanOrigin;
         this.beanType = beanType;
         this.roastLevel = roastLevel;
@@ -39,7 +41,6 @@ public class CoffeeEntity extends MenuEntity {
     }
 
     // Getters and Setters
-
     public String getBeanOrigin() { return beanOrigin; }
     public void setBeanOrigin(String beanOrigin) { this.beanOrigin = beanOrigin; }
 

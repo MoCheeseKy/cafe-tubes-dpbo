@@ -1,10 +1,13 @@
 package com.tubes_dpbo_cafe.cafe.controller;
 
 import com.tubes_dpbo_cafe.cafe.entity.MenuEntity;
+import com.tubes_dpbo_cafe.cafe.model.ApiResponse;
 import com.tubes_dpbo_cafe.cafe.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +19,28 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    // GET /api/menu -> ambil semua menu
+    // GET /api/menu?search=...&page=...&size=...
     @GetMapping
-    public List<MenuEntity> getAllMenu() {
-        return menuService.getAllMenu();
+    public ResponseEntity<ApiResponse<List<MenuEntity>>> getAllMenu(
+        @RequestParam(defaultValue = "") String search,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        // Sanitasi input pencarian
+        String cleanedSearch = search.replace("\"", "").trim();
+
+        Page<MenuEntity> resultPage = menuService.searchMenus(cleanedSearch, PageRequest.of(page, size));
+        ApiResponse<List<MenuEntity>> response = new ApiResponse<>(
+            resultPage.getContent(),
+            200,
+            "Data menu berhasil didapatkan",
+            resultPage.getNumber() + 1,
+            resultPage.getTotalElements()
+        );
+        return ResponseEntity.ok(response);
     }
 
-    // GET /api/menu/{id} -> ambil menu berdasarkan id
+    // GET /api/menu/{id}
     @GetMapping("/{id}")
     public ResponseEntity<MenuEntity> getMenuById(@PathVariable int id) {
         Optional<MenuEntity> menu = menuService.getMenuById(id);
@@ -30,13 +48,13 @@ public class MenuController {
                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // POST /api/menu -> buat menu baru
+    // POST /api/menu
     @PostMapping
     public MenuEntity createMenu(@RequestBody MenuEntity menu) {
         return menuService.createMenu(menu);
     }
 
-    // PUT /api/menu/{id} -> update menu berdasarkan id
+    // PUT /api/menu/{id}
     @PutMapping("/{id}")
     public ResponseEntity<MenuEntity> updateMenu(@PathVariable int id, @RequestBody MenuEntity updatedMenu) {
         MenuEntity menu = menuService.updateMenu(id, updatedMenu);
@@ -47,7 +65,7 @@ public class MenuController {
         }
     }
 
-    // DELETE /api/menu/{id} -> hapus menu berdasarkan id
+    // DELETE /api/menu/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMenu(@PathVariable int id) {
         boolean deleted = menuService.deleteMenu(id);
@@ -58,9 +76,11 @@ public class MenuController {
         }
     }
 
-    // GET /api/menu/category/{category} -> ambil menu berdasarkan kategori
+    // GET /api/menu/category/{category}
     @GetMapping("/category/{category}")
     public List<MenuEntity> getMenuByCategory(@PathVariable String category) {
-        return menuService.getMenuByCategory(category);
+        // Sanitasi kategori
+        String cleanedCategory = category.replace("\"", "").trim();
+        return menuService.getMenuByCategory(cleanedCategory);
     }
 }

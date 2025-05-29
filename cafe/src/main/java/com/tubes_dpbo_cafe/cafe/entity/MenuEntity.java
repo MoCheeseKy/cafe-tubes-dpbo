@@ -1,11 +1,12 @@
 package com.tubes_dpbo_cafe.cafe.entity;
+import com.tubes_dpbo_cafe.cafe.interfaces.IMenu;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "menus")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class MenuEntity {
+public class MenuEntity implements IMenu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,20 +23,20 @@ public class MenuEntity {
     private int stock;
 
     @Column(name = "is_best_seller")
-    private boolean isBestSeller;
+    private boolean bestSeller;
 
     private String image;
 
     public MenuEntity() {}
 
-    public MenuEntity(Integer id, String name, String category, String description, double price, int stock, boolean isBestSeller, String image) {
+    public MenuEntity(Integer id, String name, String category, String description, double price, int stock, boolean bestSeller, String image) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;
         this.price = price;
         this.stock = stock;
-        this.isBestSeller = isBestSeller;
+        this.bestSeller = bestSeller;
         this.image = image;
     }
 
@@ -59,8 +60,8 @@ public class MenuEntity {
     public int getStock() { return stock; }
     public void setStock(int stock) { this.stock = stock; }
 
-    public boolean isBestSeller() { return isBestSeller; }
-    public void setBestSeller(boolean bestSeller) { isBestSeller = bestSeller; }
+    public boolean bestSeller() { return bestSeller; }
+    public void setBestSeller(boolean bestSeller) { bestSeller = bestSeller; }
 
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }

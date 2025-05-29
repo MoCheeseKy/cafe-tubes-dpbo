@@ -1,13 +1,14 @@
 package com.tubes_dpbo_cafe.cafe.controller;
 
 import com.tubes_dpbo_cafe.cafe.entity.TeaEntity;
+import com.tubes_dpbo_cafe.cafe.model.ApiResponse;
 import com.tubes_dpbo_cafe.cafe.service.TeaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tea")
@@ -17,15 +18,24 @@ public class TeaController {
     private TeaService teaService;
 
     @GetMapping
-    public List<TeaEntity> getAllTea() {
-        return teaService.getAllTea();
-    }
+    public ResponseEntity<ApiResponse<List<TeaEntity>>> getAllTea(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "") String search
+    ) {
+        String cleanedSearch = search.replace("\"", "").trim();
+        Page<TeaEntity> teaPage = teaService.getAllTea(page, size, cleanedSearch);
+        List<TeaEntity> teas = teaPage.getContent();
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TeaEntity> getTeaById(@PathVariable int id) {
-        Optional<TeaEntity> tea = teaService.getTeaById(id);
-        return tea.map(ResponseEntity::ok)
-                  .orElseGet(() -> ResponseEntity.notFound().build());
+        ApiResponse<List<TeaEntity>> response = new ApiResponse<>(
+                teas,
+                200,
+                "Data Tea berhasil diambil",
+                teaPage.getNumber() + 1,
+                teaPage.getTotalElements()
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
@@ -42,30 +52,4 @@ public class TeaController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTea(@PathVariable int id) {
-        boolean deleted = teaService.deleteTea(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/origin/{leafOrigin}")
-    public List<TeaEntity> getTeaByLeafOrigin(@PathVariable String leafOrigin) {
-        return teaService.getTeaByLeafOrigin(leafOrigin);
-    }
-
-    @GetMapping("/brew-method/{brewMethod}")
-    public List<TeaEntity> getTeaByBrewMethod(@PathVariable String brewMethod) {
-        return teaService.getTeaByBrewMethod(brewMethod);
-    }
-
-    @GetMapping("/herbal/{isHerbal}")
-    public List<TeaEntity> getTeaByIsHerbal(@PathVariable boolean isHerbal) {
-        return teaService.getTeaByIsHerbal(isHerbal);
-    }
-
 }
