@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "coffee")
-@MappedSuperclass
 public class CoffeeEntity extends MenuEntity implements ICoffee {
 
     @Column(name = "bean_origin")
