@@ -23,13 +23,10 @@ public class CoffeeService {
         }
     }
 
-    // ✅ Tambahkan
     public CoffeeEntity createCoffee(CoffeeEntity coffee) {
-        // Akan otomatis masuk ke tabel `menus` dan `coffee` karena inheritance JOINED
         return coffeeRepository.save(coffee);
     }
 
-    // ✅ Tambahkan
     public CoffeeEntity updateCoffee(int id, CoffeeEntity coffeeDetails) {
         return coffeeRepository.findById(id).map(coffee -> {
             coffee.setName(coffeeDetails.getName());

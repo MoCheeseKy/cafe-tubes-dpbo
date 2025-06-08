@@ -24,7 +24,7 @@ public class TeaService {
     }
 
     public TeaEntity createTea(TeaEntity tea) {
-        tea.setCategory("Tea"); // Set category ke "Tea" agar sesuai tabel menu
+        tea.setCategory("Tea"); 
         return teaRepository.save(tea);
     }
 
