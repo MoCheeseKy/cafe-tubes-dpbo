@@ -6,7 +6,7 @@ public interface IMenu {
     String getDescription();
     double getPrice();
     int getStock();
-    boolean bestSeller();
+    boolean isBestSeller();
     String getImage();
 
     void setName(String name);

@@ -39,7 +39,7 @@ public class MenuService {
             menu.setDescription(updatedMenu.getDescription());
             menu.setPrice(updatedMenu.getPrice());
             menu.setStock(updatedMenu.getStock());
-            menu.setBestSeller(updatedMenu.bestSeller());
+            menu.setBestSeller(updatedMenu.isBestSeller());
             menu.setImage(updatedMenu.getImage());
             return menuRepository.save(menu);
         }).orElse(null);

@@ -38,7 +38,7 @@ public class CoffeeService {
             coffee.setPrice(coffeeDetails.getPrice());
             coffee.setStock(coffeeDetails.getStock());
             coffee.setImage(coffeeDetails.getImage());
-            coffee.setBestSeller(coffeeDetails.bestSeller());
+            coffee.setBestSeller(coffeeDetails.isBestSeller());
 
             coffee.setBeanOrigin(coffeeDetails.getBeanOrigin());
             coffee.setBeanType(coffeeDetails.getBeanType());

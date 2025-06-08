@@ -60,8 +60,10 @@ public class MenuEntity implements IMenu {
     public int getStock() { return stock; }
     public void setStock(int stock) { this.stock = stock; }
 
-    public boolean bestSeller() { return bestSeller; }
-    public void setBestSeller(boolean bestSeller) { bestSeller = bestSeller; }
+    public boolean isBestSeller() {
+        return bestSeller;
+    }
+    public void setBestSeller(boolean isBestSeller) { bestSeller = isBestSeller; }
 
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }

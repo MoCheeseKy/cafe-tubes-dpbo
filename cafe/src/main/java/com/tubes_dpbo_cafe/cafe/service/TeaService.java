@@ -35,7 +35,7 @@ public class TeaService {
             existing.setDescription(updatedTea.getDescription());
             existing.setPrice(updatedTea.getPrice());
             existing.setStock(updatedTea.getStock());
-            existing.setBestSeller(updatedTea.bestSeller());
+            existing.setBestSeller(updatedTea.isBestSeller());
             existing.setImage(updatedTea.getImage());
             existing.setLeafOrigin(updatedTea.getLeafOrigin());
             existing.setHerbal(updatedTea.isHerbal());
